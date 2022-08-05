@@ -1,0 +1,22 @@
+{
+  "files": [
+      "./index.ts"
+    ],
+    "include": [
+      "src/**/*"
+    ],
+    "compilerOptions": {
+      "moduleResolution": "node",
+      "baseUrl": ".",
+      "typeRoots": [
+        "./types",
+        "./node_modules/@types"
+      ],
+      "target": "es2015",
+      "noImplicitAny": false,
+      "noEmitOnError": true,
+      "removeComments": false,
+      "sourceMap": true,
+      "outDir": "dist"
+    }
+}

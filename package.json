@@ -2,12 +2,20 @@
   "name": "js-helper",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docs": "jsdoc2md --template ./src/README.hbs ./dist/index.js > ./README.md",
+    "build": "tsc --build",
+    "postbuild": "npm run docs",
+    "clean": "tsc --build --clean"
   },
   "keywords": [],
   "author": "Alexey Kagansky",
   "email": "alex@kagansky.me",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.6.4",
+    "handlebars": "^4.7.7",
+    "jsdoc-to-markdown": "^7.1.1"
+  }
 }

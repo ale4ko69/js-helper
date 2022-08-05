@@ -1,16 +1,14 @@
 /**
- * Return max of the Z-Index CSS property.
+ * Checks all DOM elements in the document body for position inline style and computed CSS and returns the maximum number of the z-index CSS property.
  * @method getMaxzIndex
  * @return {number} Maximum Z-index number
  */
-const getMaxzIndex = () => {
+const getMaxzIndex: GetMaxzIndex = (): number => {
   const sPositions = ['static', 'absolute', 'fixed', 'sticky']
+  const _domElem = document.querySelectorAll<Element>('body *')
+  const arrDomElem = Array.from(_domElem) as [] ?? []
 
-  let _domElem = document.querySelectorAll('body *')
-
-  _domElem = Array.from(_domElem) ?? []
-
-  const getCssPosition = (item) => {
+  const getCssPosition = (item: HTMLElement) => {
     let _curElementStyle = item.style
 
     if (_curElementStyle.position === '') {
@@ -23,9 +21,9 @@ const getMaxzIndex = () => {
     }
   }
 
-  const zIndexArr = _domElem.map((item, n) => {
+  const zIndexArr = arrDomElem.map((item, n) => {
     let { isPosition, zIndex } = getCssPosition(item)
-    return isPosition ? parseInt(zIndex) : 1
+    return isPosition ? typeof zIndex === 'string' ? parseInt(zIndex) : zIndex : 1
   })
 
   const maxZ = Math.max(...zIndexArr)
@@ -33,12 +31,11 @@ const getMaxzIndex = () => {
 }
 
 /**
- * Create GUID / UUID. Function calls itself.
- * Return string in unique format - 279cd021-7f13-056c-ff5e-6fe1deef4379
- * @method guid
- * @return {string} GUID
+ * Generate GUID/UUID string.
+* @method guid
+* @return {string} string in unique format GUID - 279cd021-7f13-056c-ff5e-6fe1deef4379
  */
-const guid = (() => {
+const guid: Guid = (() => {
   const s4 = () => {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
@@ -51,12 +48,12 @@ const guid = (() => {
 })()
 
 /**
- * Random String consisting from English Letters in Upper and Lower case and number from 0-9
+ * Generate random string consisting from English Letters in Upper and Lower case and number from 0-9
  * @method getRandomString
- * @param {number} strLen - length of the random string; By default 10 chars
- * @return randomstring Length of string min 10 alphanumeric characters
+ * @param strLen=10 {number | undefined} Length of the random string; By default 10 chars
+ * @return {string} Generated random string
  */
-const getRandomString = (strLen) => {
+const getRandomString: GetRandomString = (strLen: number | undefined): string => {
   const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'
   let _randomstring = ''
   const _strLen = strLen ?? 10
@@ -74,16 +71,16 @@ const getRandomString = (strLen) => {
  * @param {string} content Text with all type of breake lines and spaces
  * @return {string} Clean string
  */
-const htmlCleanWhiteBreakLine = (content) => {
+const htmlCleanWhiteBreakLine: HtmlCleanWhiteBreakLine = (content: string): string => {
   return content.replace(/(\r\n|\n|\r|\s)/gm, '')
 }
 
 /**
- * Get TIMESTAMP in milliseconds
+ * Get current TIMESTAMP in milliseconds
  * @method getTimeStampNow
  * @return {number} Milliseconds
  */
-const getTimeStampNow = () => {
+const getTimeStampNow: GetTimeStampNow = (): number => {
   const strDate = new Date()
   return strDate.getTime()
 }
@@ -92,10 +89,11 @@ const getTimeStampNow = () => {
  * Show the difference between two dates in minutes
  * @method dateDiff
  * @param {number} date2_ms Date converted to milliseconds
- * @param {namber} date1_ms Date converted to milliseconds
+ * @param {number} date1_ms Date converted to milliseconds
  * @return {number} Difference in minutes between two dates
  */
-const dateDiff = (date2_ms, date1_ms) => {
+
+const dateDiff: DateDiff = (date2_ms: number, date1_ms: number): number => {
   const one_minute = 1000 * 60 * 60
   /*** Calculate the difference in milliseconds ***/
   const difference_ms = date2_ms - date1_ms
@@ -105,18 +103,18 @@ const dateDiff = (date2_ms, date1_ms) => {
 
 /**
  * Search in object by key & value
- * @method getObjects
+ * @method findObjectsByKeyValue
  * @param {object} obj Object where we search
  * @param {string} key Property in Object in our search
  * @param {string} val Value for search
- * @return {array} Array of objects
+ * @return {array} An array of the found objects
  */
-const findObjectsByKeyValue = (obj, key, val) => {
-  const objects = []
+const findObjectsByKeyValue: FindObjectsByKeyValue = (obj: object, key: string, val: string): Array<any> => {
+  let objects = []
   for (let i in obj) {
     if (!obj.hasOwnProperty(i)) continue
     if (typeof obj[i] == 'object') {
-      objects = objects.concat(getObjects(obj[i], key, val))
+      objects = objects.concat(findObjectsByKeyValue(obj[i], key, val))
     } else if (i == key && obj[key] == val) {
       objects.push(obj)
     }
