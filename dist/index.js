@@ -43,7 +43,7 @@ const guid = (() => {
 /**
  * Generate random string consisting from English Letters in Upper and Lower case and number from 0-9
  * @method getRandomString
- * @param [strLen=10] {number | undefined} Length of the random string; By default 10 chars
+ * @param {(number | undefined)} [strLen=10] Length of the random string; By default 10 chars
  * @return {string} Generated random string
  */
 const getRandomString = (strLen) => {
@@ -94,7 +94,7 @@ const dateDiff = (date2_ms, date1_ms) => {
  * @param {object} obj Object where we search
  * @param {string} key Property in Object in our search
  * @param {string} val Value for search
- * @return {array} An array of the found objects
+ * @return {Array<object>} An array of the found objects
  */
 const findObjectsByKeyValue = (obj, key, val) => {
     let objects = [];
@@ -110,6 +110,35 @@ const findObjectsByKeyValue = (obj, key, val) => {
     }
     return objects;
 };
+/**
+ * Lorem ipsume text generator.
+ * @param {number} [numWords] number of words in a paragraph. Default 100 words
+ * @param {number} [numParagraf] number of paragraphs in the text. Default 1 paragraph
+ * @returns {string} generated text
+ */
+const textGenerator = (numWords = 100, numParagraf = 1) => {
+    const words = ["The sky", "above", "the port", "was", "the color of television", "tuned", "to", "a dead channel",
+        "All", "this happened", "more or less", "I", "had", "the story", "bit by bit", "from various people", "and",
+        "as generally", "happens", "in such cases", "each time", "it", "was", "a different story", ".", "It", "was",
+        "a pleasure", "to", "burn"];
+    const text = [];
+    const startedCounter = numWords;
+    text.push('Lorem ipsume text:\n');
+    for (let index = 0; index < numParagraf; index++) {
+        while (--numWords) {
+            let curWord = words[Math.floor(Math.random() * words.length)];
+            if (numWords === startedCounter && curWord === '.') {
+                curWord = words[Math.floor(Math.random() * words.length)];
+            }
+            text.push(words[Math.floor(Math.random() * words.length)]);
+        }
+        if (numWords === 0) {
+            numWords = startedCounter;
+        }
+        text.push('.\n');
+    }
+    return text.join(" ");
+};
 /** EXPORT METHODS */
 module.exports = {
     getMaxzIndex,
@@ -119,5 +148,6 @@ module.exports = {
     getTimeStampNow,
     dateDiff,
     findObjectsByKeyValue,
+    textGenerator
 };
 //# sourceMappingURL=index.js.map
